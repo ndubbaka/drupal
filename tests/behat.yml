@@ -5,4 +5,4 @@ default:
     Behat\MinkExtension\Extension:
       goutte: ~
       selenium2: ~
-      base_url: https://www.google.com/
+      base_url: https://www.google.com
