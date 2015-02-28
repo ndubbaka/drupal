@@ -1,9 +1,5 @@
 <?php
 
-namespace Behat\Mink\Driver;
-
-use Behat\Mink\Driver\Goutte\Client;
-
 /*
  * This file is part of the Behat\Mink.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -11,6 +7,11 @@ use Behat\Mink\Driver\Goutte\Client;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+namespace Behat\Mink\Driver;
+
+use Behat\Mink\Driver\Goutte\Client as ExtendedClient;
+use Goutte\Client;
 
 /**
  * Goutte driver.
@@ -22,41 +23,50 @@ class GoutteDriver extends BrowserKitDriver
     /**
      * Initializes Goutte driver.
      *
-     * @param Client $client HttpKernel client instance
+     * @param Client $client Goutte client instance
      */
     public function __construct(Client $client = null)
     {
-        parent::__construct($client ?: new Client());
+        parent::__construct($client ?: new ExtendedClient());
     }
 
     /**
-     * Sets HTTP Basic authentication parameters
-     *
-     * @param string|Boolean $user     user name or false to disable authentication
-     * @param string         $password password
+     * {@inheritdoc}
      */
     public function setBasicAuth($user, $password)
     {
+        if (false === $user) {
+            $this->getClient()->resetAuth();
+
+            return;
+        }
+
         $this->getClient()->setAuth($user, $password);
     }
 
     /**
-     * Sets specific request header on client.
+     * Gets the Goutte client.
      *
-     * @param string $name
-     * @param string $value
+     * The method is overwritten only to provide the appropriate return type hint.
+     *
+     * @return Client
      */
-    public function setRequestHeader($name, $value)
+    public function getClient()
     {
-        $this->getClient()->setHeader($name, $value);
+        return parent::getClient();
     }
 
     /**
-     * Prepares URL for visiting.
-     *
-     * @param string $url
-     *
-     * @return string
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        parent::reset();
+        $this->getClient()->resetAuth();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function prepareUrl($url)
     {

@@ -120,6 +120,9 @@ class XmlDumper extends Dumper
         if ($definition->getFactoryMethod()) {
             $service->setAttribute('factory-method', $definition->getFactoryMethod());
         }
+        if ($definition->getFactoryClass()) {
+            $service->setAttribute('factory-class', $definition->getFactoryClass());
+        }
         if ($definition->getFactoryService()) {
             $service->setAttribute('factory-service', $definition->getFactoryService());
         }
@@ -139,7 +142,7 @@ class XmlDumper extends Dumper
             $service->setAttribute('lazy', 'true');
         }
         if (null !== $decorated = $definition->getDecoratedService()) {
-            list ($decorated, $renamedId) = $decorated;
+            list($decorated, $renamedId) = $decorated;
             $service->setAttribute('decorates', $decorated);
             if (null !== $renamedId) {
                 $service->setAttribute('decoration-inner-name', $renamedId);
@@ -172,6 +175,17 @@ class XmlDumper extends Dumper
         }
 
         $this->addMethodCalls($definition->getMethodCalls(), $service);
+
+        if ($callable = $definition->getFactory()) {
+            $factory = $this->document->createElement('factory');
+            if (is_array($callable)) {
+                $factory->setAttribute($callable[0] instanceof Reference ? 'service' : 'class', $callable[0]);
+                $factory->setAttribute('method', $callable[1]);
+            } else {
+                $factory->setAttribute('function', $callable);
+            }
+            $service->appendChild($factory);
+        }
 
         if ($callable = $definition->getConfigurator()) {
             $configurator = $this->document->createElement('configurator');
@@ -283,7 +297,7 @@ class XmlDumper extends Dumper
     }
 
     /**
-     * Escapes arguments
+     * Escapes arguments.
      *
      * @param array $arguments
      *

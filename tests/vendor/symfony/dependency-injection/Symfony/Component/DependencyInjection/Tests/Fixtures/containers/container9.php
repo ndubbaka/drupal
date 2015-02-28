@@ -12,7 +12,7 @@ $container = new ContainerBuilder();
 $container->
     register('foo', 'Bar\FooClass')->
     addTag('foo', array('foo' => 'foo'))->
-    addTag('foo', array('bar' => 'bar'))->
+    addTag('foo', array('bar' => 'bar', 'baz' => 'baz'))->
     setFactoryClass('Bar\\FooClass')->
     setFactoryMethod('getInstance')->
     setArguments(array('foo', new Reference('foo.baz'), array('%foo%' => 'foo is %foo%', 'foobar' => '%foo%'), true, new Reference('service_container')))->
@@ -52,7 +52,7 @@ $container->
     addMethodCall('setBar', array(new Reference('foo2', ContainerInterface::NULL_ON_INVALID_REFERENCE)))->
     addMethodCall('setBar', array(new Reference('foo3', ContainerInterface::IGNORE_ON_INVALID_REFERENCE)))->
     addMethodCall('setBar', array(new Reference('foobaz', ContainerInterface::IGNORE_ON_INVALID_REFERENCE)))->
-    addMethodCall('setBar', array(new Expression('service("foo").foo() ~ parameter("foo")')))
+    addMethodCall('setBar', array(new Expression('service("foo").foo() ~ (container.hasparameter("foo") ? parameter("foo") : "default")')))
 ;
 $container->
     register('factory_service', 'Bar')->
@@ -102,6 +102,21 @@ $container
 $container
     ->register('decorator_service_with_name', 'stdClass')
     ->setDecoratedService('decorated', 'decorated.pif-pouf')
+;
+$container
+    ->register('new_factory', 'FactoryClass')
+    ->setProperty('foo', 'bar')
+    ->setScope('container')
+    ->setPublic(false)
+;
+$container
+    ->register('new_factory_service', 'FooBarBaz')
+    ->setProperty('foo', 'bar')
+    ->setFactory(array(new Reference('new_factory'), 'getInstance'))
+;
+$container
+    ->register('service_from_static_method', 'Bar\FooClass')
+    ->setFactory(array('Bar\FooClass', 'getInstance'))
 ;
 
 return $container;

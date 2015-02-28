@@ -1,8 +1,16 @@
 default:
-  paths:
-    features: 'features'
+  suites:
+    default:
+      contexts:
+        - FeatureContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
   extensions:
-    Behat\MinkExtension\Extension:
+    Behat\MinkExtension:
       goutte: ~
       selenium2: ~
-      base_url: https://www.google.com/
+      base_url: http://prod.drupalcore.drulenium.com
+    Drupal\DrupalExtension:
+      blackbox: ~
