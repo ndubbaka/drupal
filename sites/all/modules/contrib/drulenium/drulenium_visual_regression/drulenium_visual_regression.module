@@ -37,10 +37,18 @@ function drulenium_visual_regression_libraries_info() {
   return $libraries;
 }
 
+function drulenium_visual_regression_abc() {
+  return "ABC1";
+}
+
 /**
  * Implements hook_menu().
  */
 function drulenium_visual_regression_menu() {
+  $items['abc'] = array(
+    'title' => 'ABC1',
+    'page callback' => 'drulenium_visual_regression_abc',
+  );
   $items['admin/structure/drulenium/vr'] = array(
     'type' => MENU_LOCAL_TASK,
     'title' => 'Visual Regression',
