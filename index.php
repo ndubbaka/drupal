@@ -14,8 +14,10 @@
 /**
  * Root directory of Drupal installation.
  */
+ print "test3";
+ exit;
 define('DRUPAL_ROOT', getcwd());
-print "test3";
+
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 menu_execute_active_handler();
