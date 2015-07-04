@@ -1,4 +1,4 @@
-This directory structure contains the settings and configuration files specific
+test1 This directory structure contains the settings and configuration files specific
 to your site or sites and is an integral part of multisite configuration.
 
 The sites/all/ subdirectory structure should be used to place your custom and
