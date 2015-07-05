@@ -38,7 +38,7 @@ function drulenium_visual_regression_libraries_info() {
 }
 
 function drulenium_visual_regression_abc() {
-  return "ABC2";
+  return "ABC3";
 }
 
 /**
