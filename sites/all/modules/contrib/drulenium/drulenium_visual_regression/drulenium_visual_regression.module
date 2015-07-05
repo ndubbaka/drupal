@@ -38,7 +38,7 @@ function drulenium_visual_regression_libraries_info() {
 }
 
 function drulenium_visual_regression_abc() {
-  return "ABC1";
+  return "ABC2";
 }
 
 /**
@@ -46,7 +46,8 @@ function drulenium_visual_regression_abc() {
  */
 function drulenium_visual_regression_menu() {
   $items['abc'] = array(
-    'title' => 'ABC1',
+    'title' => 'ABC2',
+    'access arguments' => array('access content')
     'page callback' => 'drulenium_visual_regression_abc',
   );
   $items['admin/structure/drulenium/vr'] = array(
