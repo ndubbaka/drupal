@@ -47,7 +47,7 @@ function drulenium_visual_regression_abc() {
 function drulenium_visual_regression_menu() {
   $items['abc'] = array(
     'title' => 'ABC2',
-    'access arguments' => array('access content')
+    'access arguments' => array('access content'),
     'page callback' => 'drulenium_visual_regression_abc',
   );
   $items['admin/structure/drulenium/vr'] = array(
